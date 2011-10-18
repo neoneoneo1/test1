@@ -56,83 +56,86 @@ class myConn implements Runnable
         return false;
     }
 
-    public void run()
+    private String getXmlRezAsString()
     {
-    try {
+        String xmlString="";
+        try
+        {
             /////////////////////////////
             // Creating an empty XML Document
-
             // We need a Document
             DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
-
             ////////////////////////
             // Creating the XML tree
-
-            // create the root element and add it to the document
+            //создание рутового элемента
             Element root = doc.createElement("root");
             doc.appendChild(root);
-
-            // create a comment and put it in the root element
+            //создние комента
             Comment comment = doc.createComment("Just a thought");
+            //прицепка комента к узлу рута
             root.appendChild(comment);
 
-            // create child element, add an attribute, and add to root
+            //создание дочернего элемента
             Element child = doc.createElement("child");
+            //задание атрибутов для дочернего узла
             child.setAttribute("name", "value");
+            //прицепка дочернего элемента к руу
             root.appendChild(child);
-
-            // add a text element to the child
+            //создание текста для дочернего элемента
             Text text = doc.createTextNode("Filler, ... I could have had a foo!");
+            //прицепка текста к дочернему элементу
             child.appendChild(text);
-
             /////////////////
             // Output the XML
-
             // set up a transformer
             TransformerFactory transfac = TransformerFactory.newInstance();
             Transformer trans = transfac.newTransformer();
             trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
             // create string from xml tree
             StringWriter sw = new StringWriter();
             StreamResult result = new StreamResult(sw);
             DOMSource source = new DOMSource(doc);
             trans.transform(source, result);
-            String xmlString = sw.toString();
-
-
+            xmlString = sw.toString();
             // print xml
-            //System.out.println("Here's the xml:\n\n" + xmlString);
+            System.out.println("Here's the xml:\n\n" + xmlString);
             //System.out.println(doc.toString());
-
-
-        } catch (Exception e) {
-            System.out.println(e);
         }
-////Объект для работы с xml
-//final Document doc1 = DocumentHelper.parseText(xmlSource);
-////Получаем корневой элемент
-//final Element root1 = doc1.getRootElement();
-////Список элементов в теге elements
-//final List<element> listElementTypes1 = root1.element("elements").elements();
-////Перебираем дочерние группы элементов в теге elements
-//for (int i = 0; i < listElementTypes1.size(); i++)
-//{
-//    final List<Element> listElementLoc1 = listElementTypes1.get(i).elements();
-//    for (int j = 0; j < listElementLoc1.size(); j++)
-//    {
-//        //Получаем текст обрамленный тегом
-//        System.out.println(listElementLoc1.get(j).getText());
-//        //Получаем наименование тега
-//        System.out.println(listElementLoc1.get(j).getName());
-//        //Получаем атрибуты тега
-//        System.out.println(listElementLoc1.get(j).attributeValue("attribute1"));
-//    }
-//}
+        catch (Exception e)
+        {
+           System.out.println(e);
+        }
+        return xmlString;
+    }
 
+    private boolean doCommand()
+    {
+        String path="c:";
+        String separ="\\";
+        File f=new File(path+separ);
+        //вывести все папки
+        for(int i=0;i<f.list().length;i++)
+        {
+            File fl=new File(path+separ+f.list()[i]);
+            if(fl.isDirectory())
+                System.out.println(f.list()[i]+"\t\t==DIR==");
+        }
+        //вывести все НЕ папки
+        for(int i=0;i<f.list().length;i++)
+        {
+            File fl=new File(path+separ+f.list()[i]);
+            if(!fl.isDirectory())
+                System.out.println(f.list()[i]+"====size:"+fl.length()/(1024)+"Kb");
+        }
+        return true;
+    }
+
+    public void run()
+    {
+        doCommand();
         System.out.println("run conn ok");
         try
         {
