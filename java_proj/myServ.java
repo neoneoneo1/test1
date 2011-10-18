@@ -33,6 +33,7 @@ class myServ implements Runnable
 //                // в новый вычислительный поток и
 //                // увеличиваем счётчик на единичку
 //                //new myConn(i, server.accept());
+//                new myConn().init(i,server.accept());
 //                i++;
 //            }
             myConn con=new myConn();
