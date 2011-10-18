@@ -133,9 +133,62 @@ class myConn implements Runnable
         return true;
     }
 
+    //отправка файла клиенту
+    private byte[] sendFile(String path,OutputStream os)
+    {
+        byte[] by=null;
+        try
+        {
+            File f=new File(path);
+            FileInputStream inp=new FileInputStream(f);
+            by=new byte[1024];
+            //Читать файл по 1024байта кусками, пока в нем есть байты
+            //потом перейти на каналы
+            while(inp.available()!=0)
+            {
+                System.out.println("читается, осталось:"+inp.available()+" байт");
+                //Читаем из файла
+                inp.read(by,0,by.length);
+                //Пишем в сеть
+                os.write(by);
+            }
+            System.out.println("Весь файл прочитан, осталось:"+inp.available()+" байт");
+            inp.close();
+        }
+        catch(Exception e)
+        {System.out.println("file: "+e);} // вывод исключений
+        return by;
+    }
+
+    //приём файла от клиента, потом учесть метки пароля
+    private boolean reciveFile(String path,InputStream is)
+    {
+        byte[] by=null;
+        try
+        {
+            File f=new File(path);
+            FileOutputStream outp=new FileOutputStream(f);
+            //by=new byte[1024];
+            by=new byte[32];
+            //Читать файл по 1024байта кусками, пока в нем есть байты
+            //потом перейти на каналы
+            while(is.available()>0)
+            {
+                System.out.println("Пишеться файл, записалось:"+is.available()+" байт");
+                is.read(by);
+                outp.write(by);
+            }
+            System.out.println("Весь файл записан, осталось:"+is.available()+" байт");
+            outp.close();
+        }
+        catch(Exception e)
+        {System.out.println("file: "+e);} // вывод исключений
+        return true;
+    }
+
     public void run()
     {
-        doCommand();
+        //doCommand();
         System.out.println("run conn ok");
         try
         {
@@ -143,21 +196,23 @@ class myConn implements Runnable
             InputStream is = s.getInputStream();
             // и оттуда же — поток данных от сервера к клиенту
             OutputStream os = s.getOutputStream();
-            boolean bEnd=false;
-            while(!bEnd)
-            {
-                //Если есть байты для чтения, читаем
-                if(is.available()>0)
-                {
-                    byte[] msg = new byte[is.available()];
-                    is.read(msg);
-                    //Если пароль в сообщении в виде md5 подошёл
-                    if(checkPass(msg))
-                    {
-                        //to do
-                    }
-                }
-            }
+
+            reciveFile("c:\\Archive.rar",is);
+//            boolean bEnd=false;
+//            while(!bEnd)
+//            {
+//                //Если есть байты для чтения, читаем
+//                if(is.available()>0)
+//                {
+//                    byte[] msg = new byte[is.available()];
+//                    is.read(msg);
+//                    //Если пароль в сообщении в виде md5 подошёл
+//                    if(checkPass(msg))
+//                    {
+//                        //to do
+//                    }
+//                }
+//            }
             s.close();
 //
 //            // создаём строку, содержащую полученную от клиента информацию
