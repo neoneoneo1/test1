@@ -1,3 +1,5 @@
+import sun.java2d.pipe.OutlineTextRenderer;
+
 public class chemiLogik
 {
     public static void main(String[] pars)
@@ -25,18 +27,25 @@ public class chemiLogik
                 //подбор шаблона по игровой матрице
                 if(r<(mas.length-etalon.length) && c<(mas[0].length-etalon[0].length))
                 {
-                    for(i=0;i<etalon.length;i++)
+                    boolean bFind=true;
+                    Outr:
                     {
-                        for(j=0;j<etalon[i].length;j++)
+                        for(i=0;i<etalon.length;i++)
                         {
-
-
-                            if(etalon[i][j]==1 && etalon[i][j]==mas[r+i][c+j])
+                            for(j=0;j<etalon[i].length;j++)
+                            {
+                                if(!(etalon[i][j]==1 && etalon[i][j]==mas[r+i][c+j]))
+                                {
+                                    bFind=false;
+                                    break Outr;
+                                }
+                            }
                         }
                     }
+                    if(bFind)
+                        System.out.println("ok");
                 }
             }
         }
-        System.out.println(etalon.length);
     }
 }
