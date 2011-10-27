@@ -1,4 +1,5 @@
 import java.util.*;
+
 public class chemiLogik
 {
     private static int cnt=0;
@@ -27,7 +28,7 @@ public class chemiLogik
                         {
                             for(j=0;j<colCnt;j++)
                             {
-                                if(etalon[i][j]==1 && etalon[i][j]!=mas[r+i][c+j])
+                                if(etalon[i][j]>0 && etalon[i][j]!=mas[r+i][c+j])
                                 {
                                     bFind=false;
                                     break Outr;
@@ -100,6 +101,7 @@ public class chemiLogik
         return 0;
     }
 
+    //Перемещение указанного элемента (по фокусу)
     public static int makeStep(int curRow,int curCol,int stepPosRow, int spepPosCol, int mas[][])
     {
         int karman=mas[curRow][curCol];
@@ -110,66 +112,65 @@ public class chemiLogik
 
     public static void main(String[] pars)
     {
-        int [][] mas={      {2,0,0,0,0},//2ка это припятствие
-                            {0,0,0,0,0},
-                            {0,0,0,0,1},
-                            {0,0,0,0,1},
-                            {1,0,0,0,1}
+        int [][] mas={      { 0, 0, 0, 0, 0},//2ка это припятствие
+                            {-1, 0, 0, 0, 0},
+                            { 0, 0, 0, 0, 1},
+                            { 2, 0, 0, 0, 3},
+                            { 1, 0, 0, 0, 4}
                         };
         int [][] etalon={   {0,1},
-                            {1,1},
-                            {0,1},
+                            {2,3},
+                            {0,4},
                         };
-//        out(mas);
-//        out(etalon);
 
         //нажатие вправо
         //0-вправо, 1-влево, 2-вверх,3-вниз
-//        int direction=0;
-//        if(isFinished(mas,etalon))
-//            System.out.println("ok");
-//        else
-//            System.out.println("error");
-
-        //двигаем вверх
         out(mas);
-        makeStep(4,0,getStepCount(4,0,2, mas),0,mas);
+        if(isFinished(mas,etalon))
+            System.out.println("ok");
+        else
+            System.out.println("error");
+        //0-вправо, 1-влево, 2-вверх,3-вниз
+        makeStep(3,0,3,getStepCount(3,0,0, mas),mas);
         out(mas);
 
+        if(isFinished(mas,etalon))
+            System.out.println("ok");
+        else
+            System.out.println("error");
 
-
-        //Потоки 1й способ создания
-        //Создание потока путем наследования класса Thread
-        class thrd extends Thread
-        {
-            thrd(){}
-            @Override
-            public void run()
-            {
-                try
-                {
-                    for(int i=0;i<5;i++)
-                    {
-                        sleep(1000);
-                        System.out.print(cnt);
-                        cnt++;
-                    }
-                }
-                catch (InterruptedException e) { return; }
-                System.out.print("\n");
-            }
-        }
-
-        thrd c=new thrd();
-        c.start();
-        //Остановить основной (вызывающий) поток и ждать пока не завершиться вызванный поток
-        try
-        {
-            c.join();
-        }
-        catch(InterruptedException e)
-        {
-            System.out.println("catch p.t.join()");
-        }
+//        //Потоки 1й способ создания
+//        //Создание потока путем наследования класса Thread
+//        class thrd extends Thread
+//        {
+//            thrd(){}
+//            @Override
+//            public void run()
+//            {
+//                try
+//                {
+//                    for(int i=0;i<5;i++)
+//                    {
+//                        sleep(1000);
+//                        System.out.print(cnt);
+//                        cnt++;
+//                    }
+//                }
+//                catch (InterruptedException e) { return; }
+//                System.out.print("\n");
+//            }
+//        }
+//
+//        thrd c=new thrd();
+//        c.start();
+//        //Остановить основной (вызывающий) поток и ждать пока не завершиться вызванный поток
+//        try
+//        {
+//            c.join();
+//        }
+//        catch(InterruptedException e)
+//        {
+//            System.out.println("catch p.t.join()");
+//        }
     }
 }
