@@ -12,16 +12,19 @@ public class chemi extends JFrame
     //Координаты всех фигур
     public int x[]=new int[4];
     public int y[]=new int[4];
+
+    static String tt;
+
     public boolean moveNow=false;
     //Номер текущей фигуры
     int actRow=-1;
     int actCol=-1;
     static BufferedImage imgs[]=null;
     int [][] mas={      { 1, 0, 0, 0, 0 },//2ка это припятствие
+                        { 0, 0, 2, 0, 0 },
                         { 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 2 },
-                        { 0, 0, 0, 0, 3 },
-                        { 0, 0, 0, 0, 4 }
+                        { 0, 3, 0, 0, 0 },
+                        { 0, 0, 0, 4, 0 }
                     };
     int [][] etalon={   {0,2},
                         {0,3},
@@ -323,16 +326,24 @@ public class chemi extends JFrame
 
     public static void main(String[] pars)
     {
-        URL resource = new chemi().getClass().getResource("/");
+
+//        tt=new String(new chemi().getClass().getResource("/").getPath());
+//        System.out.println(tt);
+        //URL resource = new chemi().getClass().getResource("/");
+
+        //resource.getPath()
         String path=new File(".").getAbsolutePath();
         path=path.substring(0,path.length()-2)+"\\res\\";
         //System.out.println(ss);
-
+        //String path=new chemi.getClass().getResource("images/mark.gif");
         imgs=new BufferedImage[4];
         for(int i=0;i<4;i++)
         try
         {
-            imgs[i] = ImageIO.read(new File(path+(i+1)+".jpg"));
+            //imgs[i] = ImageIO.read(new File(path+(i+1)+".jpg"));
+            imgs[i] = ImageIO.read(ClassLoader.getSystemResource("res/"+(i+1)+".jpg"));
+
+
         }
         catch(Exception e)
         {
