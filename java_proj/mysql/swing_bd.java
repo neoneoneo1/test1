@@ -47,7 +47,7 @@ public class swing_bd
         try {
             String driverName = "com.mysql.jdbc.Driver";
             Class.forName(driverName);
-            con = DriverManager.getConnection("jdbc:mysql://localhost/test", "root", "christian1980");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/test", "root", "pass");
             //удаление таблицы
             doUpdateQuery("DROP TABLE IF EXISTS t4");
             //создание таблицы t4
